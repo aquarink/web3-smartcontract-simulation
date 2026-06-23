@@ -1,0 +1,1571 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pebri Coin Shop - Simulasi Web3 & Kriptografi</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #020817;
+            --card-bg: rgba(15, 23, 42, 0.9);
+            --card-border: rgba(234, 179, 8, 0.25);
+            --primary-blue: #1e3a8a;
+            --accent-yellow: #eab308;
+            --text-color: #ffffff;
+        }
+
+        body {
+            background: linear-gradient(135deg, #020817 0%, #0f172a 50%, #020817 100%);
+            color: #ffffff;
+            font-family: 'Outfit', sans-serif;
+            min-height: 100vh;
+        }
+
+        h1, h2, h3, h4, h5, h6, .title-font {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            color: #ffffff !important;
+        }
+
+        /* Glassmorphism Cards with Yellow Borders */
+        .glass-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .glass-card:hover {
+            box-shadow: 0 10px 40px 0 rgba(234, 179, 8, 0.15);
+        }
+
+        .glass-card-header {
+            font-size: 1.25rem;
+            color: #ffffff !important;
+            border-bottom: 1px solid rgba(234, 179, 8, 0.2);
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .glass-card-header i {
+            color: var(--accent-yellow) !important;
+        }
+
+        /* Form Controls */
+        .form-control {
+            background-color: #0b0f19;
+            border: 1px solid rgba(234, 179, 8, 0.3);
+            color: #ffffff !important;
+            border-radius: 10px;
+            padding: 10px 15px;
+        }
+
+        .form-control:focus {
+            background-color: #0f172a;
+            border-color: var(--accent-yellow);
+            box-shadow: 0 0 0 0.25rem rgba(234, 179, 8, 0.2);
+            color: #ffffff !important;
+        }
+
+        /* Labels (Kuning) */
+        .form-label, label, .hash-label, .text-muted, .text-muted.small, .text-muted.small.uppercase, .step-item .text-muted {
+            color: var(--accent-yellow) !important;
+            font-weight: 500;
+        }
+        
+        /* Tab Navigation (Tema Kuning/Biru Gelap) */
+        .nav-pills .nav-link {
+            color: var(--accent-yellow);
+            border: 1px solid rgba(234, 179, 8, 0.2);
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-weight: 600;
+            margin: 0 5px;
+            background-color: rgba(15, 23, 42, 0.5);
+        }
+
+        .nav-pills .nav-link.active {
+            background: var(--accent-yellow);
+            color: #020817 !important;
+            border-color: var(--accent-yellow);
+            box-shadow: 0 0 10px rgba(234, 179, 8, 0.3);
+        }
+
+        /* Yellow Theme Buttons */
+        .btn-gradient {
+            background: linear-gradient(135deg, var(--accent-yellow) 0%, #ca8a04 100%);
+            border: none;
+            color: #020817 !important;
+            font-weight: 700;
+            border-radius: 10px;
+            padding: 12px 24px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-gradient:hover {
+            background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%);
+            box-shadow: 0 0 15px rgba(234, 179, 8, 0.4);
+        }
+
+        .btn-outline-custom {
+            border: 1px solid var(--accent-yellow);
+            color: var(--accent-yellow);
+            background: transparent;
+            font-weight: 600;
+            border-radius: 10px;
+            padding: 10px 20px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-custom:hover {
+            background: rgba(234, 179, 8, 0.1);
+            color: #ffffff;
+            border-color: var(--accent-yellow);
+        }
+
+        /* Hashing Terminal Visualizer */
+        .hash-code {
+            background-color: #020817;
+            border: 1px solid rgba(234, 179, 8, 0.2);
+            font-family: 'Courier New', Courier, monospace;
+            padding: 15px;
+            border-radius: 10px;
+            color: #ffffff;
+            font-size: 0.9rem;
+            word-break: break-all;
+            white-space: pre-wrap;
+        }
+
+        /* Diagram Middleman Flow */
+        .diagram-node {
+            background: #020817;
+            border: 1px solid rgba(234, 179, 8, 0.3);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .diagram-node.active {
+            border-color: var(--accent-yellow);
+            box-shadow: 0 0 15px rgba(234, 179, 8, 0.4);
+        }
+
+        .diagram-arrow {
+            color: var(--accent-yellow);
+            font-size: 1.5rem;
+            animation: pulse-arrow 1.5s infinite;
+        }
+
+        @keyframes pulse-arrow {
+            0%, 100% { opacity: 0.4; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
+
+        /* Metric Box */
+        .metric-box {
+            background: #020817;
+            border: 1px solid rgba(234, 179, 8, 0.15);
+            border-radius: 12px;
+            padding: 15px;
+        }
+
+        .metric-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            font-family: 'Space Grotesk', sans-serif;
+            color: #ffffff !important;
+            -webkit-text-fill-color: #ffffff !important;
+            background: none;
+        }
+
+        /* Step Checkbox inside Modal */
+        .step-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(234, 179, 8, 0.1);
+        }
+
+        .step-icon {
+            font-size: 1.25rem;
+        }
+
+        .step-status-waiting { color: rgba(234, 179, 8, 0.4) !important; }
+        .step-status-active { color: var(--accent-yellow) !important; animation: rotate-spinner 2s infinite linear; }
+        .step-status-done { color: #10b981 !important; }
+
+        @keyframes rotate-spinner {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Table overrides inside modal */
+        #txDetailsResult table tr td:first-child {
+            color: #475569 !important;
+            font-weight: 600;
+        }
+        
+        #txDetailsResult table tr td:last-child {
+            color: #0f172a !important;
+        }
+        
+        /* Faucet Details styling adjustments */
+        #nodeStatusBanner {
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(234, 179, 8, 0.3) !important;
+        }
+        
+        #nodeStatusBanner h5, #nodeStatusBanner strong {
+            color: #ffffff !important;
+        }
+        
+        #blockHeightBadge.bg-success {
+            background-color: var(--accent-yellow) !important;
+            color: #020817 !important;
+            font-weight: 700;
+        }
+
+        /* Blockchain Flow Component Styles */
+        .blockchain-flow-container {
+            position: relative;
+            width: 100%;
+            margin: 30px auto;
+        }
+
+        .flow-svg-connectors {
+            position: absolute;
+            top: 30px;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .flow-nodes-wrapper {
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 2;
+            padding: 0 40px;
+        }
+
+        .flow-node-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            width: 120px;
+            transition: transform 0.3s ease;
+        }
+
+        .flow-node-item:hover {
+            transform: scale(1.08);
+        }
+
+        .node-icon-wrapper {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #020817;
+            border: 3px solid rgba(234, 179, 8, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-yellow);
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .node-label-text {
+            margin-top: 10px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--accent-yellow);
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Glow active states */
+        .flow-node-item.active .node-icon-wrapper {
+            transform: scale(1.15);
+        }
+
+        .flow-node-item.active .node-icon-wrapper.blue-glow {
+            border-color: #3b82f6 !important;
+            box-shadow: 0 0 20px #3b82f6;
+            color: #3b82f6 !important;
+        }
+
+        .flow-node-item.active .node-icon-wrapper.cyan-glow {
+            border-color: #06b6d4 !important;
+            box-shadow: 0 0 20px #06b6d4;
+            color: #06b6d4 !important;
+        }
+
+        .flow-node-item.active .node-icon-wrapper.purple-glow {
+            border-color: #8b5cf6 !important;
+            box-shadow: 0 0 20px #8b5cf6;
+            color: #8b5cf6 !important;
+        }
+
+        .flow-node-item.active .node-icon-wrapper.green-glow {
+            border-color: #10b981 !important;
+            box-shadow: 0 0 20px #10b981;
+            color: #10b981 !important;
+        }
+
+        .flow-node-item.active .node-label-text {
+            color: #ffffff !important;
+        }
+
+        /* Active flow path particles */
+        .active-particle-flow {
+            animation: flowParticles 3s infinite linear;
+            opacity: 0.15;
+            transition: opacity 0.5s ease;
+        }
+
+        .active-particle-flow.active {
+            opacity: 1;
+        }
+
+        @keyframes flowParticles {
+            0% {
+                stroke-dashoffset: 100;
+            }
+            100% {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        /* Explanation Card styling overrides */
+        .edu-explanation-card {
+            background: #020817;
+            border: 2px solid var(--accent-yellow);
+            border-radius: 12px;
+            min-height: 140px;
+            transition: all 0.5s ease;
+        }
+
+        .edu-explanation-card.active {
+            border-color: #10b981;
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .flow-svg-connectors {
+                display: none;
+            }
+            
+            .flow-nodes-wrapper {
+                flex-direction: column;
+                gap: 40px;
+                padding: 0;
+            }
+            
+            .flow-node-item {
+                position: relative;
+            }
+            
+            .flow-node-item:not(:last-child)::after {
+                content: "⬇️";
+                position: absolute;
+                bottom: -32px;
+                font-size: 1.2rem;
+                color: var(--accent-yellow);
+                animation: pulse-arrow-vertical 1.5s infinite;
+            }
+        }
+
+        @keyframes pulse-arrow-vertical {
+            0%, 100% { opacity: 0.4; transform: translateY(0); }
+            50% { opacity: 1; transform: translateY(5px); }
+        }
+
+        /* Micro-animations inside nodes when active/clicked */
+        .flow-node-item.active#eduNode1 .node-icon-wrapper i {
+            animation: pulseNode 2s infinite ease-in-out;
+        }
+        .flow-node-item.active#eduNode2 .node-icon-wrapper i {
+            animation: bounceNode 1.5s infinite ease-in-out;
+        }
+        .flow-node-item.active#eduNode3 .node-icon-wrapper i {
+            animation: spinNode 3s infinite linear;
+        }
+        .flow-node-item.active#eduNode4 .node-icon-wrapper i {
+            animation: scaleNode 2s infinite ease-in-out;
+        }
+
+        @keyframes pulseNode {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        @keyframes bounceNode {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+        @keyframes spinNode {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        @keyframes scaleNode {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 15px rgba(16, 185, 129, 0.4); }
+            50% { transform: scale(1.25); box-shadow: 0 0 25px rgba(16, 185, 129, 0.8); }
+        }
+    </style>
+</head>
+<body class="py-5">
+
+    <div class="container">
+        <!-- Title & Subtitle -->
+        <div class="text-center mb-5">
+            <h1 class="display-4 text-white mb-2"><i class="fa-solid fa-coins text-warning me-2"></i>Pebri Coin Shop</h1>
+            <p class="lead text-muted">Aplikasi Web Edukasi Simulasi Jual-Beli & Kriptografi Smart Contract</p>
+            <hr class="mx-auto border-secondary w-50">
+        </div>
+
+        <!-- Node Connection Banner -->
+        <div id="nodeStatusBanner" class="glass-card mb-4 border-info">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h5 class="mb-1 text-info"><i class="fa-solid fa-circle-check me-2"></i>Status Node Blockchain</h5>
+                    <p class="mb-0 text-muted" id="statusMessage">Mengecek koneksi node lokal...</p>
+                </div>
+                <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                    <span id="blockHeightBadge" class="badge bg-secondary p-2">Block #0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- -------------------- VIEW: AUTHENTICATION (LOGIN/REGISTER) -------------------- -->
+        <div id="authView" class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="glass-card">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-pills nav-justified mb-4" id="authTabs" role="tablist">
+                        <li class="nav-item">
+                            <button class="nav-link active" id="login-tab" data-bs-toggle="tab" data-bs-target="#loginPane" type="button" role="tab"><i class="fa-solid fa-right-to-bracket me-2"></i>Masuk Pengguna</button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link" id="register-tab" data-bs-toggle="tab" data-bs-target="#registerPane" type="button" role="tab"><i class="fa-solid fa-user-plus me-2"></i>Registrasi Pengguna Baru</button>
+                        </li>
+                    </ul>
+
+                    <!-- Tab contents -->
+                    <div class="tab-content">
+                        <!-- Pane 1: Login -->
+                        <div class="tab-pane fade show active" id="loginPane" role="tabpanel">
+                            <h4 class="mb-3 text-white">🔑 Masuk ke Aplikasi</h4>
+                            <div class="mb-3">
+                                <label class="form-label text-muted">Email</label>
+                                <input type="email" id="loginEmail" class="form-control" placeholder="contoh@mahasiswa.ac.id">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label text-muted">Password</label>
+                                <input type="password" id="loginPassword" class="form-control" placeholder="Password rahasia Anda">
+                            </div>
+                            
+                            <!-- Hashing Live view -->
+                            <div id="loginHashVisual" class="mb-4 d-none">
+                                <div class="hash-label">Visualisasi Kriptografi: Client-Side SHA-256 Hash</div>
+                                <div class="hash-code" id="loginHashBox">Menghitung hash...</div>
+                            </div>
+                            
+                            <button onclick="handleLogin()" class="btn btn-gradient w-100"><i class="fa-solid fa-rocket me-2"></i>Masuk Sekarang</button>
+                        </div>
+
+                        <!-- Pane 2: Register -->
+                        <div class="tab-pane fade" id="registerPane" role="tabpanel">
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <h4 class="mb-3 text-white">📝 Buat Akun Blockchain Baru</h4>
+                                    <div class="mb-3">
+                                        <label class="form-label text-muted">Email</label>
+                                        <input type="email" id="regEmail" class="form-control" placeholder="mahasiswa@univ.ac.id">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label text-muted">Password</label>
+                                        <input type="password" id="regPassword" class="form-control" placeholder="Password minimal 6 karakter">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label text-muted">Ulangi Password</label>
+                                        <input type="password" id="regRepassword" class="form-control" placeholder="Ulangi password">
+                                    </div>
+                                    
+                                    <button onclick="handleRegister()" class="btn btn-gradient w-100 mt-2"><i class="fa-solid fa-user-check me-2"></i>Daftar & Minta Modal Koin</button>
+                                </div>
+                                <div class="col-md-5 mt-4 mt-md-0 border-start border-secondary ps-md-4">
+                                    <h5 class="text-white"><i class="fa-solid fa-shield-halved text-info me-2"></i>Edukasi Kripto</h5>
+                                    <p class="text-muted small">
+                                        Saat Anda mendaftar:
+                                    </p>
+                                    <ol class="text-muted small ps-3">
+                                        <li>Password di-hash di browser. Hash ini dikirim ke server.</li>
+                                        <li>Wallet Keypair (Address + Private Key) dibuat lokal di browser.</li>
+                                        <li>Fungsi Faucet mentransfer 1 ETH (biaya gas) & mencetak 100 Pebri Coin.</li>
+                                    </ol>
+
+                                    <!-- Live hashing view for Register -->
+                                    <div id="regHashVisual" class="d-none">
+                                        <div class="hash-label">Password SHA-256 Hash</div>
+                                        <div class="hash-code p-2 text-warning" id="regHashBox" style="font-size: 0.8rem;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- -------------------- VIEW: DASHBOARD (MAIN APPLICATION) -------------------- -->
+        <div id="dashboardView" class="d-none">
+            <!-- Header bar logged-in user -->
+            <div class="glass-card mb-4">
+                <div class="row align-items-center">
+                    <div class="col-md-5">
+                        <span class="text-muted small uppercase">PENGGUNA AKTIF</span><br>
+                        <strong id="userEmailBadge" class="text-white">mahasiswa@univ.ac.id</strong>
+                    </div>
+                    <div class="col-md-5 mt-2 mt-md-0">
+                        <span class="text-muted small">ALAMAT DOMPET (ADDRESS)</span><br>
+                        <code id="userAddressBadge" class="text-info bg-dark px-2 py-1 rounded" style="font-size: 0.85rem;">0x...</code>
+                    </div>
+                    <div class="col-md-2 text-md-end mt-3 mt-md-0">
+                        <button onclick="logout()" class="btn btn-outline-danger btn-sm"><i class="fa-solid fa-right-from-bracket me-1"></i>Keluar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grid (Full-Width Stacks) -->
+            <div class="row g-4">
+                <!-- A. Kredensial Hashing Database -->
+                <div class="col-12">
+                    <div class="glass-card">
+                        <div class="glass-card-header text-primary"><i class="fa-solid fa-key me-2"></i>A. Kredensial Kriptografis</div>
+                        <p class="text-muted small">
+                            Database <code>users.json</code> menyimpan password dalam bentuk hash satu-arah:
+                        </p>
+                        <div class="hash-label">Hashed Password di Server</div>
+                        <div class="hash-code text-primary" id="savedHashBox" style="font-size: 0.85rem;">-</div>
+                        <p class="text-muted small mt-3">
+                            💡 <i>Setiap kali Anda masuk, sistem mencocokkan hash yang dihasilkan klien. Walaupun database dicuri, peretas tidak mengetahui kata sandi polos Anda.</i>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Saldo Real-Time -->
+                <div class="col-12">
+                    <div class="glass-card">
+                        <div class="glass-card-header text-info"><i class="fa-solid fa-wallet me-2"></i>Saldo Blockchain Real-Time</div>
+                        <div class="row g-3">
+                            <!-- User balance card -->
+                            <div class="col-md-6">
+                                <div class="metric-box h-100">
+                                    <div class="text-muted small">Saldo Pebri Coin Anda</div>
+                                    <div class="metric-value" id="userCoinBalBox">0 PEBRI</div>
+                                    <div class="text-muted small mt-1"><i class="fa-solid fa-gas-pump me-1"></i>Gas Fee: <span id="userEthBalBox">0</span> ETH</div>
+                                </div>
+                            </div>
+                            <!-- Owner balance card -->
+                            <div class="col-md-6">
+                                <div class="metric-box h-100">
+                                    <div class="text-muted small">Saldo Pemilik Toko (Owner)</div>
+                                    <div class="metric-value text-secondary" id="ownerCoinBalBox" style="background: linear-gradient(45deg, #94a3b8, #cbd5e1); -webkit-background-clip: text;">0 PEBRI</div>
+                                    <div class="text-muted small mt-1"><i class="fa-solid fa-gas-pump me-1"></i>Gas Fee: <span id="ownerEthBalBox">0</span> ETH</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- B. Diagram Middleman Smart Contract -->
+                <div class="col-12">
+                    <div class="glass-card">
+                        <div class="glass-card-header text-accent-cyan"><i class="fa-solid fa-network-wired me-2"></i>B. Smart Contract Sebagai Perantara</div>
+                        
+                        <div class="row align-items-center py-3 g-2 text-center">
+                            <div class="col-3">
+                                <div class="diagram-node">
+                                    <span class="text-white d-block small"><i class="fa-solid fa-user text-info"></i></span>
+                                    <span class="small text-white">Browser User</span>
+                                    <code class="text-muted d-block" style="font-size: 0.65rem;" id="diagUserAddr">0x000...</code>
+                                </div>
+                            </div>
+                            <div class="col-1">
+                                <div class="diagram-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+                                <span class="text-muted" style="font-size: 0.6rem;">Sign Tx</span>
+                            </div>
+                            <div class="col-4">
+                                <div class="diagram-node active">
+                                    <span class="text-white d-block small"><i class="fa-solid fa-file-contract text-warning"></i></span>
+                                    <span class="small text-white">PebriCoinShop</span>
+                                    <code class="text-muted d-block" style="font-size: 0.65rem;" id="diagContractAddr">0x000...</code>
+                                </div>
+                            </div>
+                            <div class="col-1">
+                                <div class="diagram-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+                                <span class="text-muted" style="font-size: 0.6rem;">Verify</span>
+                            </div>
+                            <div class="col-3">
+                                <div class="diagram-node">
+                                    <span class="text-white d-block small"><i class="fa-solid fa-user-tie text-success"></i></span>
+                                    <span class="small text-white">Dompet Owner</span>
+                                    <code class="text-muted d-block" style="font-size: 0.65rem;" id="diagOwnerAddr">0x000...</code>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p class="text-muted small text-center mb-0 mt-2">
+                            <i>Web Server hanya memantau. Logika transfer dan pengurangan stok ditangani secara mandiri dan otonom oleh node Ethereum.</i>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- C. Transaksi Toko -->
+                <div class="col-12">
+                    <div class="glass-card">
+                        <div class="glass-card-header text-warning"><i class="fa-solid fa-cart-shopping me-2"></i>C. Transaksi Pembelian Barang</div>
+                        
+                        <!-- Product Info Card -->
+                        <div class="p-3 mb-4 rounded-3" style="background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2);">
+                            <h5 class="text-white mb-2" id="prodNameBox">Buku Belajar Smart-Contract Pemula</h5>
+                            <div class="d-flex justify-content-between">
+                                <span class="text-muted">Harga: <strong class="text-white" id="prodPriceBox">10</strong> Pebri Coin</span>
+                                <span class="text-muted">Stok: <strong class="text-info" id="prodStockBox">100</strong> Buku</span>
+                            </div>
+                        </div>
+
+                        <div class="row align-items-center g-3">
+                            <div class="col-md-6">
+                                <label class="form-label text-muted">Jumlah Buku yang Ingin Dibeli</label>
+                                <input type="number" id="buyQty" class="form-control" value="1" min="1">
+                            </div>
+                            <div class="col-md-6">
+                                <span class="text-muted d-block">Total Pembayaran</span>
+                                <h4 class="text-warning mb-0" id="totalCostBox">10 PEBRI</h4>
+                            </div>
+                            <div class="col-12 mt-4">
+                                <button onclick="triggerBuyModal()" id="btnBuy" class="btn btn-gradient w-100 py-3"><i class="fa-solid fa-wallet me-2"></i>Beli Sekarang (Kirim Transaksi Blockchain)</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Riwayat Transaksi Section -->
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="glass-card" style="background: #e2e8f0; border: 2px solid rgba(0, 0, 0, 0.15);">
+                        <div class="glass-card-header" style="color: #0f172a !important; border-bottom: 1px solid rgba(0, 0, 0, 0.15);">
+                            <i class="fa-solid fa-list-ul me-2" style="color: #0f172a !important;"></i>📋 Riwayat Transaksi Blockchain (Eksplorer Edukasi)
+                        </div>
+                        <p class="small mb-3" style="color: #475569 !important;">
+                            Klik tombol <strong>Detail Kripto 🔍</strong> di setiap baris riwayat untuk menganalisis bagaimana transaksi ini masuk ke dalam blok, melihat biaya bahan bakar (Gas Fee) EVM, dan mencocokkan hash data.
+                        </p>
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0" style="background-color: #f1f5f9; border: 1px solid rgba(0, 0, 0, 0.1); font-size: 0.9rem;">
+                                <thead>
+                                    <tr style="border-bottom: 2px solid rgba(0, 0, 0, 0.15); color: #0f172a !important;">
+                                        <th>Waktu</th>
+                                        <th>Jenis Transaksi</th>
+                                        <th>Pengirim ➔ Penerima</th>
+                                        <th>Nilai Transfer</th>
+                                        <th>Nomor Blok</th>
+                                        <th class="text-end">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="txHistoryBody">
+                                    <tr>
+                                        <td colspan="6" class="text-center" style="color: #475569 !important; font-weight: 500;">Belum ada riwayat transaksi blockchain untuk akun ini.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- -------------------- MODAL: TRANSAKSI PROGRESS SIMULATION -------------------- -->
+    <div class="modal fade" id="txModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content text-white" style="background: #0f172a; border: 1px solid var(--accent-cyan); border-radius: 16px;">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title" id="staticBackdropLabel"><i class="fa-solid fa-gears text-info me-2"></i>Proses Penambangan Blockchain</h5>
+                </div>
+                <div class="modal-body">
+                    <p class="text-muted small">
+                        Mengamati alur verifikasi blok real-time di jaringan lokal EVM:
+                    </p>
+
+                    <!-- Step 1 -->
+                    <div class="step-item" id="step1">
+                        <div class="step-icon" id="step1Icon"><i class="fa-solid fa-circle-notch step-status-active"></i></div>
+                        <div>
+                            <strong class="d-block">Step 1: Membuat Payload Transaksi</strong>
+                            <span class="text-muted small" style="font-size: 0.75rem;">Mengeksekusi parameter `beliBarang(quantity)` di Smart Contract</span>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="step-item" id="step2">
+                        <div class="step-icon" id="step2Icon"><i class="fa-solid fa-circle-dot step-status-waiting"></i></div>
+                        <div>
+                            <strong class="d-block">Step 2: Menandatangani Transaksi Lokal</strong>
+                            <span class="text-muted small" style="font-size: 0.75rem;">Meng-encrypt tanda tangan menggunakan dompet Private Key</span>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="step-item" id="step3">
+                        <div class="step-icon" id="step3Icon"><i class="fa-solid fa-circle-dot step-status-waiting"></i></div>
+                        <div>
+                            <strong class="d-block">Step 3: Menyiarkan (Broadcast) ke Jaringan</strong>
+                            <span class="text-muted small" style="font-size: 0.75rem;">Mengirim Signed Transaction hash ke Ethereum RPC</span>
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="step-item" id="step4">
+                        <div class="step-icon" id="step4Icon"><i class="fa-solid fa-circle-dot step-status-waiting"></i></div>
+                        <div>
+                            <strong class="d-block">Step 4: Konfirmasi Blok (Receipt Mined)</strong>
+                            <span class="text-muted small" style="font-size: 0.75rem;">Fungsi Solidity dijalankan, saldo dan stok buku berhasil diubah</span>
+                        </div>
+                    </div>
+
+                    <!-- Transaction details display -->
+                    <div id="txDetailsResult" class="mt-4 p-3 rounded d-none" style="background: #e2e8f0; border: 2px solid #10b981;">
+                        <h6 class="text-success" style="color: #065f46 !important; font-weight: 700;"><i class="fa-solid fa-square-check me-2"></i>Transaksi Sukses!</h6>
+                        <table class="table table-sm table-borderless text-muted small mb-0" style="font-size: 0.8rem;">
+                            <tr>
+                                <td>Tx Hash:</td>
+                                <td class="text-break" id="receiptTxHash" style="font-weight: 600;">-</td>
+                            </tr>
+                            <tr>
+                                <td>Block Number:</td>
+                                <td id="receiptBlockNum" style="font-weight: 600;">-</td>
+                            </tr>
+                            <tr>
+                                <td>Gas Used:</td>
+                                <td id="receiptGasUsed" style="font-weight: 600;">-</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" id="btnCloseModal" class="btn btn-secondary btn-sm d-none" data-bs-dismiss="modal">Tutup Dialog</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- -------------------- MODAL: EKSPLORER EDUKASI & KONSEPTUAL BLOCKCHAIN -------------------- -->
+    <div class="modal fade" id="explorerModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content text-white" style="background: #0b0f19; border: 2px solid var(--accent-yellow); border-radius: 16px;">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title" style="color: var(--accent-yellow) !important;"><i class="fa-solid fa-graduation-cap me-2"></i>Eksplorer Edukasi: Bagaimana Blockchain Bekerja?</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <!-- Visual Interactive Flow Chart -->
+                    <h5 class="text-white mb-3 text-center">🚲 Visualisasi Alur Transaksi Masuk ke Blok Blockchain</h5>
+                    
+                    <div class="blockchain-flow-container my-4">
+                        <!-- SVG Connector Lines in background -->
+                        <svg class="flow-svg-connectors" viewBox="0 0 800 100" preserveAspectRatio="none">
+                            <path id="path1to2" d="M 100 50 L 300 50" stroke="rgba(234, 179, 8, 0.15)" stroke-width="4" fill="none" />
+                            <path id="path1to2-active" d="M 100 50 L 300 50" stroke="url(#blue-cyan-grad)" stroke-width="4" stroke-dasharray="10 15" fill="none" class="active-particle-flow" />
+                            
+                            <path id="path2to3" d="M 300 50 L 500 50" stroke="rgba(234, 179, 8, 0.15)" stroke-width="4" fill="none" />
+                            <path id="path2to3-active" d="M 300 50 L 500 50" stroke="url(#cyan-purple-grad)" stroke-width="4" stroke-dasharray="10 15" fill="none" class="active-particle-flow" />
+                            
+                            <path id="path3to4" d="M 500 50 L 700 50" stroke="rgba(234, 179, 8, 0.15)" stroke-width="4" fill="none" />
+                            <path id="path3to4-active" d="M 500 50 L 700 50" stroke="url(#purple-green-grad)" stroke-width="4" stroke-dasharray="10 15" fill="none" class="active-particle-flow" />
+
+                            <defs>
+                                <linearGradient id="blue-cyan-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" stop-color="#3b82f6" />
+                                    <stop offset="100%" stop-color="#06b6d4" />
+                                </linearGradient>
+                                <linearGradient id="cyan-purple-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" stop-color="#06b6d4" />
+                                    <stop offset="100%" stop-color="#8b5cf6" />
+                                </linearGradient>
+                                <linearGradient id="purple-green-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" stop-color="#8b5cf6" />
+                                    <stop offset="100%" stop-color="#10b981" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+
+                        <!-- Interactive HTML Nodes positioned on top -->
+                        <div class="flow-nodes-wrapper">
+                            <!-- Node 1 -->
+                            <div class="flow-node-item" id="eduNode1" onclick="selectEduNode(1)">
+                                <div class="node-icon-wrapper blue-glow">
+                                    <i class="fa-solid fa-file-signature"></i>
+                                </div>
+                                <div class="node-label-text">1. Signed Tx</div>
+                            </div>
+
+                            <!-- Node 2 -->
+                            <div class="flow-node-item" id="eduNode2" onclick="selectEduNode(2)">
+                                <div class="node-icon-wrapper cyan-glow">
+                                    <i class="fa-solid fa-boxes-stacked"></i>
+                                </div>
+                                <div class="node-label-text">2. Mempool</div>
+                            </div>
+
+                            <!-- Node 3 -->
+                            <div class="flow-node-item" id="eduNode3" onclick="selectEduNode(3)">
+                                <div class="node-icon-wrapper purple-glow">
+                                    <i class="fa-solid fa-microchip"></i>
+                                </div>
+                                <div class="node-label-text">3. EVM Gas</div>
+                            </div>
+
+                            <!-- Node 4 -->
+                            <div class="flow-node-item" id="eduNode4" onclick="selectEduNode(4)">
+                                <div class="node-icon-wrapper green-glow">
+                                    <i class="fa-solid fa-cubes"></i>
+                                </div>
+                                <div class="node-label-text">4. Mined Block #<span id="eduMinedBlockNumTop">0</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Explanation Card -->
+                    <div class="edu-explanation-card p-3 mb-4" id="eduExplainCard" style="display: none; transform: translateY(20px); opacity: 0; transition: all 0.4s ease;">
+                        <h6 id="eduExplainTitle" class="text-white font-weight-bold mb-2">Tahapan Detail</h6>
+                        <p id="eduExplainText" class="text-muted small mb-0" style="color: #cbd5e1 !important; line-height: 1.4; text-align: justify;"></p>
+                    </div>
+
+                    <!-- Transaction details display -->
+                    <div class="p-3 mb-4 rounded-3" style="background: #020817; border: 1px solid rgba(234,179,8,0.2);">
+                        <h6 style="color: var(--accent-yellow) !important; font-weight: bold;"><i class="fa-solid fa-receipt me-2"></i>Data Transaksi yang Tersimpan Permanen:</h6>
+                        <div class="row g-2 small" style="font-size: 0.8rem;">
+                            <div class="col-sm-3 text-warning font-weight-bold">Jenis Transaksi:</div>
+                            <div class="col-sm-9 text-white font-weight-bold" id="eduTxType">-</div>
+                            
+                            <div class="col-sm-3 text-warning font-weight-bold">Hash Transaksi (Tx Hash):</div>
+                            <div class="col-sm-9 text-white font-monospace text-break" id="eduTxHash">-</div>
+
+                            <div class="col-sm-3 text-warning font-weight-bold">Dari (From Address):</div>
+                            <div class="col-sm-9 text-white font-monospace text-break" id="eduTxFrom">-</div>
+
+                            <div class="col-sm-3 text-warning font-weight-bold">Untuk (To Address):</div>
+                            <div class="col-sm-9 text-white font-monospace text-break" id="eduTxTo">-</div>
+
+                            <div class="col-sm-3 text-warning font-weight-bold">Nilai Transfer:</div>
+                            <div class="col-sm-9 text-white font-weight-bold" id="eduTxValue">-</div>
+
+                            <div class="col-sm-3 text-warning font-weight-bold">Gas yang Digunakan:</div>
+                            <div class="col-sm-9 text-white font-weight-bold" id="eduTxGasUsed">-</div>
+                        </div>
+                    </div>
+
+                    <!-- Three Pillar Explanations -->
+                    <div class="row g-3">
+                        <!-- Card 1: Tx Hash -->
+                        <div class="col-md-4">
+                            <div class="p-3 rounded-3 h-100" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);">
+                                <h6 class="text-warning"><i class="fa-solid fa-fingerprint me-2"></i>1. Tx Hash</h6>
+                                <p class="text-white small mb-0" style="font-size: 0.75rem; text-align: justify;">
+                                    Tanda pengenal unik transaksi. Dihitung menggunakan fungsi SHA-256 data transaksi (sender, receiver, nonce, gas, call data). Jika ada satu bit data diubah, Tx Hash akan berubah total, menjamin data tidak bisa dipalsukan.
+                                </p>
+                            </div>
+                        </div>
+                        <!-- Card 2: Gas Fee -->
+                        <div class="col-md-4">
+                            <div class="p-3 rounded-3 h-100" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);">
+                                <h6 class="text-warning"><i class="fa-solid fa-gas-pump me-2"></i>2. Apa itu Gas?</h6>
+                                <p class="text-white small mb-0" style="font-size: 0.75rem; text-align: justify;">
+                                    Biaya komputasi untuk menjalankan kode Solidity di EVM (Ethereum Virtual Machine). Transaksi Anda membutuhkan daya listrik & komputasi penambang. Anda membayar biaya gas sebesar: <br><code>Gas Used * Gas Price</code>.
+                                </p>
+                            </div>
+                        </div>
+                        <!-- Card 3: Blockchain -->
+                        <div class="col-md-4">
+                            <div class="p-3 rounded-3 h-100" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);">
+                                <h6 class="text-warning"><i class="fa-solid fa-link me-2"></i>3. Blockchain</h6>
+                                <p class="text-white small mb-0" style="font-size: 0.75rem; text-align: justify;">
+                                    Buku besar yang dibentuk dari blok-blok data. Setiap blok menyimpan kumpulan transaksi dan hash dari blok sebelumnya. Rantai ini membuat data transaksi bersifat <i>immutable</i> (tidak dapat dihapus atau diedit).
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-warning btn-sm" data-bs-dismiss="modal" style="color: #020817; font-weight:bold;">Mengerti & Selesai</button>
+                </div>
+            </div>
+        </div>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Client-Side Javascript Logic -->
+    <script>
+        // Global State Object
+        const state = {
+            loggedIn: false,
+            email: "",
+            address: "",
+            privateKey: "",
+            productPrice: 10,
+            productStock: 100,
+            latestBlock: 0
+        };
+
+        // Async SHA-256 using Browser Web Crypto API
+        async function sha256(message) {
+            const msgBuffer = new TextEncoder().encode(message);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        // Live Hash update events for Login and Register input fields
+        const loginPasswordInput = document.getElementById("loginPassword");
+        const loginHashVisual = document.getElementById("loginHashVisual");
+        const loginHashBox = document.getElementById("loginHashBox");
+
+        loginPasswordInput.addEventListener("input", async () => {
+            const pass = loginPasswordInput.value;
+            if (pass) {
+                loginHashVisual.classList.remove("d-none");
+                const hash = await sha256(pass);
+                loginHashBox.innerHTML = `<strong>Text:</strong> ${pass}<br><strong>Hash:</strong> ${hash}`;
+            } else {
+                loginHashVisual.classList.add("d-none");
+            }
+        });
+
+        const regPasswordInput = document.getElementById("regPassword");
+        const regHashVisual = document.getElementById("regHashVisual");
+        const regHashBox = document.getElementById("regHashBox");
+
+        regPasswordInput.addEventListener("input", async () => {
+            const pass = regPasswordInput.value;
+            if (pass) {
+                regHashVisual.classList.remove("d-none");
+                const hash = await sha256(pass);
+                regHashBox.innerHTML = hash;
+            } else {
+                regHashVisual.classList.add("d-none");
+            }
+        });
+
+        // Price calculator
+        const buyQtyInput = document.getElementById("buyQty");
+        const totalCostBox = document.getElementById("totalCostBox");
+
+        buyQtyInput.addEventListener("input", () => {
+            const qty = Math.max(1, parseInt(buyQtyInput.value) || 1);
+            buyQtyInput.value = qty;
+            const cost = qty * state.productPrice;
+            totalCostBox.innerText = `${cost} PEBRI`;
+        });
+
+        // Node Connection Status Verification
+        async function checkNodeStatus() {
+            try {
+                const response = await fetch('/api/status');
+                const data = await response.json();
+                
+                const banner = document.getElementById("nodeStatusBanner");
+                const statusMessage = document.getElementById("statusMessage");
+                const blockHeightBadge = document.getElementById("blockHeightBadge");
+
+                if (data.connected) {
+                    banner.className = "glass-card mb-4 border-success";
+                    statusMessage.innerHTML = `<strong>Status: Connected ✅</strong> | RPC URL: <code>${data.rpc_url}</code> | Contract: <code>${data.contract_address}</code>`;
+                    blockHeightBadge.innerText = `Block #${data.latest_block}`;
+                    blockHeightBadge.className = "badge bg-success p-2";
+                    state.latestBlock = data.latest_block;
+                    
+                    // Update middleman diagram values
+                    document.getElementById("diagContractAddr").innerText = data.contract_address.substring(0, 8) + '...';
+                    document.getElementById("diagOwnerAddr").innerText = data.owner_address.substring(0, 8) + '...';
+                } else {
+                    banner.className = "glass-card mb-4 border-danger";
+                    statusMessage.innerHTML = `<strong>Status: Disconnected ❌</strong> | ${data.message}`;
+                    blockHeightBadge.innerText = "Offline";
+                    blockHeightBadge.className = "badge bg-danger p-2";
+                }
+            } catch (error) {
+                console.error("Failed to check node status", error);
+            }
+        }
+
+        // Fetch balances and smart contract data
+        async function fetchAppState() {
+            if (!state.loggedIn) return;
+            try {
+                const response = await fetch(`/api/state?user_address=${state.address}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    state.productPrice = data.product_price;
+                    state.productStock = data.product_stock;
+
+                    // Update UI text values
+                    document.getElementById("userCoinBalBox").innerText = `${data.user_coin_bal} PEBRI`;
+                    document.getElementById("userEthBalBox").innerText = data.user_eth_bal.toFixed(4);
+                    document.getElementById("ownerCoinBalBox").innerText = `${data.owner_coin_bal} PEBRI`;
+                    document.getElementById("ownerEthBalBox").innerText = data.owner_eth_bal.toFixed(4);
+                    document.getElementById("prodNameBox").innerText = data.product_name;
+                    document.getElementById("prodPriceBox").innerText = data.product_price;
+                    document.getElementById("prodStockBox").innerText = data.product_stock;
+                    document.getElementById("blockHeightBadge").innerText = `Block #${data.latest_block}`;
+                    
+                    // Trigger price update
+                    buyQtyInput.dispatchEvent(new Event('input'));
+                }
+            } catch (error) {
+                console.error("Failed to fetch state", error);
+            }
+        }
+
+        // Action: Register User
+        async function handleRegister() {
+            const email = document.getElementById("regEmail").value.strip ? document.getElementById("regEmail").value.strip() : document.getElementById("regEmail").value;
+            const password = document.getElementById("regPassword").value;
+            const repassword = document.getElementById("regRepassword").value;
+
+            if (!email || !password || !repassword) {
+                alert("Harap lengkapi semua input!");
+                return;
+            }
+            if (password !== repassword) {
+                alert("Konfirmasi password tidak cocok!");
+                return;
+            }
+
+            try {
+                const registerBtn = document.querySelector('#registerPane button');
+                const originalText = registerBtn.innerHTML;
+                registerBtn.disabled = true;
+                registerBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin me-2"></i>Membuat Akun & Minting Faucet...';
+
+                const response = await fetch('/api/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    alert(`Registrasi sukses!\nAddress dompet Anda: ${data.address}\n\nFaucet Gas Fee 1 ETH dan 100 Pebri Coin awal berhasil dikirim ke blockchain!`);
+                    
+                    // Initialize transaction history for this newly registered email
+                    const storageKey = `pebri_tx_history_${email}`;
+                    const history = [];
+                    history.push({
+                        time: new Date().toLocaleTimeString(),
+                        type: "Faucet ETH Gas Fee ⛽",
+                        hash: data.tx_hash_eth,
+                        from: "0x5425da4F59Cc09c82752A40B14d15F0E153E91CC",
+                        to: data.address,
+                        value: "1.0 ETH",
+                        gasUsed: "21000",
+                        blockNum: "1"
+                    });
+                    history.push({
+                        time: new Date().toLocaleTimeString(),
+                        type: "Faucet Mint Pebri Coin 🪙",
+                        hash: data.tx_hash_mint,
+                        from: "0x0000000000000000000000000000000000000000",
+                        to: data.address,
+                        value: "100 PEBRI",
+                        gasUsed: "48301",
+                        blockNum: "2"
+                    });
+                    localStorage.setItem(storageKey, JSON.stringify(history));
+                    
+                    // Clear inputs and switch tabs to login
+                    document.getElementById("regEmail").value = "";
+                    document.getElementById("regPassword").value = "";
+                    document.getElementById("regRepassword").value = "";
+                    regHashVisual.classList.add("d-none");
+                    
+                    // Switch tab
+                    const loginTab = new bootstrap.Tab(document.getElementById('login-tab'));
+                    loginTab.show();
+                } else {
+                    alert(`Registrasi gagal: ${data.message}`);
+                }
+                registerBtn.disabled = false;
+                registerBtn.innerHTML = originalText;
+            } catch (error) {
+                alert("Koneksi API register gagal!");
+            }
+        }
+
+        // Action: Login User
+        async function handleLogin() {
+            const email = document.getElementById("loginEmail").value.trim();
+            const password = document.getElementById("loginPassword").value;
+
+            if (!email || !password) {
+                alert("Silakan isi email dan password!");
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    state.loggedIn = true;
+                    state.email = data.email;
+                    state.address = data.address;
+                    state.privateKey = data.private_key;
+
+                    // Save session details
+                    sessionStorage.setItem('pebri_email', data.email);
+                    sessionStorage.setItem('pebri_address', data.address);
+                    sessionStorage.setItem('pebri_pkey', data.private_key);
+
+                    // Switch view to dashboard
+                    document.getElementById("authView").classList.add("d-none");
+                    document.getElementById("dashboardView").classList.remove("d-none");
+                    
+                    // Update top bar detail badges
+                    document.getElementById("userEmailBadge").innerText = data.email;
+                    document.getElementById("userAddressBadge").innerText = data.address;
+                    document.getElementById("diagUserAddr").innerText = data.address.substring(0, 8) + '...';
+
+                    // Update database hashed Visualizer display
+                    const hashed_pass = await sha256(password);
+                    document.getElementById("savedHashBox").innerText = hashed_pass;
+
+                    // Fetch state data
+                    await fetchAppState();
+                    renderTxHistory();
+                } else {
+                    alert(`Login gagal: ${data.message}`);
+                }
+            } catch (error) {
+                alert("Koneksi API login gagal!");
+            }
+        }
+
+        // Load Session state from sessionStorage
+        function loadSession() {
+            const email = sessionStorage.getItem('pebri_email');
+            const address = sessionStorage.getItem('pebri_address');
+            const pkey = sessionStorage.getItem('pebri_pkey');
+
+            if (email && address && pkey) {
+                state.loggedIn = true;
+                state.email = email;
+                state.address = address;
+                state.privateKey = pkey;
+
+                document.getElementById("authView").classList.add("d-none");
+                document.getElementById("dashboardView").classList.remove("d-none");
+                
+                document.getElementById("userEmailBadge").innerText = email;
+                document.getElementById("userAddressBadge").innerText = address;
+                document.getElementById("diagUserAddr").innerText = address.substring(0, 8) + '...';
+
+                // Display mock visualizer info
+                document.getElementById("savedHashBox").innerText = "🔐 Terenkripsi Sesuai dengan Kredensial Database";
+
+                fetchAppState();
+                renderTxHistory();
+            }
+        }
+
+        function logout() {
+            sessionStorage.clear();
+            state.loggedIn = false;
+            state.email = "";
+            state.address = "";
+            state.privateKey = "";
+            
+            document.getElementById("dashboardView").classList.add("d-none");
+            document.getElementById("authView").classList.remove("d-none");
+        }
+
+        // Modal transaction step simulation
+        const txModalEl = document.getElementById('txModal');
+        let bootstrapModal = null;
+
+        function updateStepStatus(stepNum, status) {
+            const iconEl = document.getElementById(`step${stepNum}Icon`);
+            if (status === 'active') {
+                iconEl.innerHTML = '<i class="fa-solid fa-circle-notch step-status-active"></i>';
+            } else if (status === 'done') {
+                iconEl.innerHTML = '<i class="fa-solid fa-circle-check step-status-done"></i>';
+            } else {
+                iconEl.innerHTML = '<i class="fa-solid fa-circle-dot step-status-waiting"></i>';
+            }
+        }
+
+        async function triggerBuyModal() {
+            const qty = parseInt(buyQtyInput.value) || 1;
+            
+            if (state.productStock < qty) {
+                alert("Stok tidak mencukupi!");
+                return;
+            }
+
+            // Init modal instance
+            if (!bootstrapModal) {
+                bootstrapModal = new bootstrap.Modal(txModalEl);
+            }
+
+            // Reset modal step visual states
+            updateStepStatus(1, 'active');
+            updateStepStatus(2, 'waiting');
+            updateStepStatus(3, 'waiting');
+            updateStepStatus(4, 'waiting');
+            document.getElementById("txDetailsResult").classList.add("d-none");
+            document.getElementById("btnCloseModal").classList.add("d-none");
+
+            bootstrapModal.show();
+
+            // STEP 1 Simulation Pause
+            setTimeout(() => {
+                updateStepStatus(1, 'done');
+                updateStepStatus(2, 'active');
+
+                // STEP 2 Simulation Pause
+                setTimeout(() => {
+                    updateStepStatus(2, 'done');
+                    updateStepStatus(3, 'active');
+
+                    // STEP 3 Simulation Pause: Call Backend to broadcast
+                    setTimeout(async () => {
+                        try {
+                            const response = await fetch('/api/buy', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    user_address: state.address,
+                                    private_key: state.privateKey,
+                                    quantity: qty
+                                })
+                            });
+                            const data = await response.json();
+
+                            if (data.success) {
+                                updateStepStatus(3, 'done');
+                                updateStepStatus(4, 'done');
+
+                                // Show Tx Details
+                                document.getElementById("receiptTxHash").innerText = data.tx_hash;
+                                document.getElementById("receiptBlockNum").innerText = `#${data.block_number}`;
+                                document.getElementById("receiptGasUsed").innerText = `${data.gas_used} units`;
+                                document.getElementById("txDetailsResult").classList.remove("d-none");
+                                document.getElementById("btnCloseModal").classList.remove("d-none");
+
+                                // Save transaction details to education history
+                                const ownerAddr = document.getElementById("diagOwnerAddr").innerText === "0x000..." ? "0x5425da4F59Cc09c82752A40B14d15F0E153E91CC" : document.getElementById("diagOwnerAddr").innerText;
+                                saveTxToHistory(
+                                    `Pembelian Buku (${qty} Pcs) 📘`,
+                                    data.tx_hash,
+                                    state.address,
+                                    ownerAddr,
+                                    `${qty * state.productPrice} PEBRI`,
+                                    data.gas_used,
+                                    data.block_number
+                                );
+
+                                // Refresh balances
+                                await fetchAppState();
+                            } else {
+                                alert(`Transaksi gagal diproses node: ${data.message}`);
+                                bootstrapModal.hide();
+                            }
+                        } catch (error) {
+                            alert("Koneksi API transaksi belanja gagal!");
+                            bootstrapModal.hide();
+                        }
+                    }, 1200);
+
+                }, 1000);
+
+            }, 1000);
+        }
+
+        // Helper to save transaction to history
+        function saveTxToHistory(type, hash, from, to, value, gasUsed, blockNum) {
+            const email = state.email || 'anonymous';
+            const storageKey = `pebri_tx_history_${email}`;
+            const history = JSON.parse(localStorage.getItem(storageKey)) || [];
+            
+            const newTx = {
+                time: new Date().toLocaleTimeString(),
+                type: type,
+                hash: hash,
+                from: from,
+                to: to,
+                value: value,
+                gasUsed: gasUsed,
+                blockNum: blockNum
+            };
+            
+            history.unshift(newTx);
+            localStorage.setItem(storageKey, JSON.stringify(history));
+            renderTxHistory();
+        }
+
+        // Helper to render transaction history list
+        function renderTxHistory() {
+            if (!state.loggedIn) return;
+            const email = state.email;
+            const storageKey = `pebri_tx_history_${email}`;
+            const history = JSON.parse(localStorage.getItem(storageKey)) || [];
+            
+            const body = document.getElementById("txHistoryBody");
+            if (!body) return;
+            
+            body.innerHTML = "";
+            
+            if (history.length === 0) {
+                body.innerHTML = `<tr><td colspan="6" class="text-center" style="color: #475569 !important; font-weight: 500;">Belum ada riwayat transaksi blockchain untuk akun ini.</td></tr>`;
+                return;
+            }
+            
+            history.forEach((tx, idx) => {
+                const row = document.createElement("tr");
+                row.style.borderBottom = "1px solid rgba(0,0,0,0.08)";
+                
+                // Truncate addresses for display
+                const fromShort = tx.from ? (tx.from.substring(0, 8) + '...') : '-';
+                const toShort = tx.to ? (tx.to.substring(0, 8) + '...') : '-';
+                
+                row.innerHTML = `
+                    <td style="color: #0f172a !important;">${tx.time}</td>
+                    <td style="color: #020817 !important; font-weight: bold;">${tx.type}</td>
+                    <td class="font-monospace" style="font-size: 0.85rem; color: #0f172a !important;">
+                        <span style="color: #475569 !important; font-weight: 600;">Dari:</span> ${fromShort}<br>
+                        <span style="color: #475569 !important; font-weight: 600;">Ke:</span> ${toShort}
+                    </td>
+                    <td style="color: #020817 !important; font-weight: bold;">${tx.value}</td>
+                    <td><span class="badge bg-dark" style="color: #ffffff !important;">#${tx.blockNum}</span></td>
+                    <td class="text-end">
+                        <button onclick="showTxDetailsEdu(${idx})" class="btn btn-outline-dark btn-sm" style="font-size: 0.75rem; font-weight: 600;"><i class="fa-solid fa-graduation-cap me-1"></i>Detail Kripto 🔍</button>
+                    </td>
+                `;
+                body.appendChild(row);
+            });
+        }
+
+        // Transaction Flow interactive metadata
+        const eduNodeDetails = {
+            1: {
+                title: "Signed Tx (Tanda Tangan Digital)",
+                text: "Transaksi belanja Pebri Coin Anda ditandatangani secara kriptografis menggunakan kunci privat (Private Key). Tanda tangan ini membuktikan secara matematis bahwa transaksi sah berasal dari alamat Anda tanpa membagikan kunci privat Anda ke pihak lain. Transaksi aman dari modifikasi."
+            },
+            2: {
+                title: "Mempool (Antrean Transaksi Global)",
+                text: "Setelah ditandatangani, transaksi dikirim ke node jaringan EVM lokal. Transaksi masuk ke Mempool (Memory Pool), tempat transaksi mengantre bersama transaksi pengguna lain menunggu giliran untuk dieksekusi dan dibungkus ke dalam blok oleh miner/validator."
+            },
+            3: {
+                title: "EVM Gas (Kalkulasi Komputasi Solidity)",
+                text: "Mesin virtual EVM mengeksekusi kode Solidity dari smart contract (fungsi `beliBarang`). Setiap langkah komputasi mengonsumsi Gas. Satuan unit gas dikalikan harga gas untuk menghitung biaya transaksi, menjamin pencegahan serangan infinite loop dan spam jaringan."
+            },
+            4: {
+                title: "Mined Block (Penyimpanan Buku Besar)",
+                text: "Transaksi Anda berhasil dibungkus validator ke dalam Blok baru secara permanen di blockchain. State smart contract diperbarui secara global: saldo berkurang, stok buku berkurang, dan hash transaksi dicatat secara publik."
+            }
+        };
+
+        let cascadeTimeouts = [];
+        let explorerModalInstance = null;
+
+        function clearCascadeTimeouts() {
+            cascadeTimeouts.forEach(t => clearTimeout(t));
+            cascadeTimeouts = [];
+        }
+
+        function selectEduNode(nodeNum) {
+            // Clear cascade timeouts since manual selection interrupts automatic playback
+            clearCascadeTimeouts();
+
+            // 1. Update active states for nodes
+            for (let i = 1; i <= 4; i++) {
+                const node = document.getElementById(`eduNode${i}`);
+                if (i === nodeNum) {
+                    node.classList.add('active');
+                } else {
+                    node.classList.remove('active');
+                }
+            }
+
+            // 2. Update active states for SVG lines
+            document.getElementById('path1to2-active').classList.toggle('active', nodeNum >= 2);
+            document.getElementById('path2to3-active').classList.toggle('active', nodeNum >= 3);
+            document.getElementById('path3to4-active').classList.toggle('active', nodeNum >= 4);
+
+            // 3. Update Explanation Card details with animations
+            const card = document.getElementById("eduExplainCard");
+            const titleEl = document.getElementById("eduExplainTitle");
+            const textEl = document.getElementById("eduExplainText");
+
+            // Hide/slide down for clean transition
+            card.style.opacity = "0";
+            card.style.transform = "translateY(15px)";
+
+            setTimeout(() => {
+                const info = eduNodeDetails[nodeNum];
+                if (nodeNum === 4) {
+                    const blockNum = document.getElementById("eduMinedBlockNumTop").innerText || "0";
+                    titleEl.innerHTML = `<i class="fa-solid fa-cubes text-success me-2"></i>Tahap 4: Mined Block #${blockNum} (Penyimpanan Buku Besar)`;
+                } else {
+                    let iconClass = "fa-file-signature text-primary";
+                    if (nodeNum === 2) iconClass = "fa-boxes-stacked text-info";
+                    if (nodeNum === 3) iconClass = "fa-microchip text-warning";
+                    titleEl.innerHTML = `<i class="fa-solid ${iconClass} me-2"></i>Tahap ${nodeNum}: ${info.title}`;
+                }
+                textEl.innerText = info.text;
+
+                // Border and shadow dynamic matching
+                const borderColors = {
+                    1: '#3b82f6',
+                    2: '#06b6d4',
+                    3: '#8b5cf6',
+                    4: '#10b981'
+                };
+                const shadowColors = {
+                    1: 'rgba(59, 130, 246, 0.3)',
+                    2: 'rgba(6, 182, 212, 0.3)',
+                    3: 'rgba(139, 92, 246, 0.3)',
+                    4: 'rgba(16, 185, 129, 0.3)'
+                };
+                card.style.borderColor = borderColors[nodeNum];
+                card.style.boxShadow = `0 0 20px ${shadowColors[nodeNum]}`;
+                card.style.display = "block";
+
+                // Force reflow
+                card.offsetHeight;
+
+                card.style.opacity = "1";
+                card.style.transform = "translateY(0)";
+            }, 150);
+        }
+
+        function triggerCascadeAnimation() {
+            clearCascadeTimeouts();
+            
+            // Step 1: Start with Node 1
+            selectEduNode(1);
+            
+            // Step 2: Animate path 1 to 2, then highlight Node 2
+            cascadeTimeouts.push(setTimeout(() => {
+                document.getElementById('path1to2-active').classList.add('active');
+                
+                cascadeTimeouts.push(setTimeout(() => {
+                    selectEduNode(2);
+                    
+                    // Step 3: Animate path 2 to 3, then highlight Node 3
+                    cascadeTimeouts.push(setTimeout(() => {
+                        document.getElementById('path2to3-active').classList.add('active');
+                        
+                        cascadeTimeouts.push(setTimeout(() => {
+                            selectEduNode(3);
+                            
+                            // Step 4: Animate path 3 to 4, then highlight Node 4 (Mined Block)
+                            cascadeTimeouts.push(setTimeout(() => {
+                                document.getElementById('path3to4-active').classList.add('active');
+                                
+                                cascadeTimeouts.push(setTimeout(() => {
+                                    selectEduNode(4);
+                                }, 800));
+                                
+                            }, 1200));
+                        }, 800));
+                        
+                    }, 1200));
+                }, 800));
+                
+            }, 1200));
+        }
+
+        // Helper to show educational details of transaction in modal
+        function showTxDetailsEdu(index) {
+            const email = state.email;
+            const storageKey = `pebri_tx_history_${email}`;
+            const history = JSON.parse(localStorage.getItem(storageKey)) || [];
+            const tx = history[index];
+            
+            if (!tx) return;
+            
+            // Set explorerModal dynamic contents
+            document.getElementById("eduMinedBlockNumTop").innerText = tx.blockNum;
+            document.getElementById("eduTxType").innerText = tx.type;
+            document.getElementById("eduTxHash").innerText = tx.hash || '-';
+            document.getElementById("eduTxFrom").innerText = tx.from || '-';
+            document.getElementById("eduTxTo").innerText = tx.to || '-';
+            document.getElementById("eduTxValue").innerText = tx.value;
+            document.getElementById("eduTxGasUsed").innerText = (tx.gasUsed || '0') + " gas units";
+            
+            // Show modal
+            const modalEl = document.getElementById('explorerModal');
+            if (!explorerModalInstance) {
+                explorerModalInstance = new bootstrap.Modal(modalEl);
+                
+                // Add modal animation listeners
+                modalEl.addEventListener('shown.bs.modal', () => {
+                    triggerCascadeAnimation();
+                });
+                
+                modalEl.addEventListener('hidden.bs.modal', () => {
+                    clearCascadeTimeouts();
+                    // Reset elements state
+                    for (let i = 1; i <= 4; i++) {
+                        document.getElementById(`eduNode${i}`).classList.remove('active');
+                    }
+                    document.getElementById('path1to2-active').classList.remove('active');
+                    document.getElementById('path2to3-active').classList.remove('active');
+                    document.getElementById('path3to4-active').classList.remove('active');
+                    const card = document.getElementById("eduExplainCard");
+                    card.style.display = "none";
+                    card.style.opacity = "0";
+                    card.style.transform = "translateY(20px)";
+                });
+            }
+            explorerModalInstance.show();
+        }
+
+        // On Page Load
+        window.addEventListener('DOMContentLoaded', () => {
+            checkNodeStatus();
+            loadSession();
+            
+            // Loop checker status node every 10 seconds
+            setInterval(checkNodeStatus, 10000);
+        });
+    </script>
+</body>
+</html>
