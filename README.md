@@ -136,17 +136,17 @@ graph TD
     end
 
     %% Flow Alur
-    UI -->|1. Input Password| HashCalc
-    HashCalc -->|2. Password Hashed| UI
-    UI -->|3. Kirim Form Data & Tx Request| App
-    App -->|4. Verifikasi & Simpan Kredensial| DB
-    App -->|5. Hubungkan & Buat Payload Transaksi| W3
-    W3 -->|6. Kirim Transaksi (Signed Tx)| SC
-    SC -->|7. Eksekusi Fungsi Solidity| SC
-    SC -->|8. Modifikasi Ledger & Confirm Block| Ledger
-    Ledger -->|9. Receipt & Updated State| W3
-    W3 -->|10. Data JSON Hasil Transaksi| App
-    App -->|11. Render state baru ke UI| UI
+    UI -->|"1. Input Password"| HashCalc
+    HashCalc -->|"2. Password Hashed"| UI
+    UI -->|"3. Kirim Form Data & Tx Request"| App
+    App -->|"4. Verifikasi & Simpan Kredensial"| DB
+    App -->|"5. Hubungkan & Buat Payload Transaksi"| W3
+    W3 -->|"6. Kirim Transaksi (Signed Tx)"| SC
+    SC -->|"7. Eksekusi Fungsi Solidity"| SC
+    SC -->|"8. Modifikasi Ledger & Confirm Block"| Ledger
+    Ledger -->|"9. Receipt & Updated State"| W3
+    W3 -->|"10. Data JSON Hasil Transaksi"| App
+    App -->|"11. Render state baru ke UI"| UI
 ```
 
 ---
